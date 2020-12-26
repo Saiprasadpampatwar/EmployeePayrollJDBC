@@ -59,7 +59,7 @@ public class RestAssureTest {
         employeePayrollService.addEmployeeToPayroll(employeePayrollData, EmployeePayrollService.IOService.REST_IO);
         long entries = employeePayrollService.countEntries(EmployeePayrollService.IOService.REST_IO);
         System.out.println("Employee Payroll entires in JSON Server: \n"+response.asString());
-        Assert.assertEquals(3,entries);
+        Assert.assertEquals(10,entries);
     }
 
     private Response addEmployeeToJsonServer(EmployeePayrollData employeePayrollData) {
@@ -69,4 +69,5 @@ public class RestAssureTest {
         request.body(employeeJson);
         return request.post("/employeePayrollData");
     }
+
 }

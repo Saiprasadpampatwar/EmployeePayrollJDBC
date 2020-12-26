@@ -3,6 +3,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class EmployeePayrollService {
 
@@ -237,6 +238,16 @@ public class EmployeePayrollService {
     public int getNoOfActiveEmployee() throws PayrollServiceException {
         return employeePayrollDBService.getNoOfActiveEmployee();
     }
+
+
+    public void deleteEmployeeFromPayroll(String name, IOService ioService) {
+        if(ioService.equals(IOService.REST_IO)){
+            List<EmployeePayrollData> emp = employeePayrollList.stream().filter(e-> e.name.equals(name)).collect(Collectors.toList());
+            employeePayrollList.remove(emp.get(0));
+        }
+    }
+
+
 
     /* Write Employee Payroll data to console */
     public void writeEmployeePayrollData(IOService ioService) {

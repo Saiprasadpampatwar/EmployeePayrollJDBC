@@ -92,4 +92,22 @@ public class RestAssureTest {
         Assert.assertEquals(14,entries);
 
     }
+
+    @Test
+    public void givenSalaryForEmployee_whenUpdated_ShouldMatch200Response() throws PayrollServiceException {
+        EmployeePayrollData[] arrayOfEmps = getEmployeeList();
+        employeePayrollService = new EmployeePayrollService(Arrays.asList(arrayOfEmps));
+
+        employeePayrollService.updateEmployeeSalary("Anil Ambani", 1500000, EmployeePayrollService.IOService.REST_IO);
+        EmployeePayrollData employeePayrollData = employeePayrollService.getEmployeePayrollData("Anil Ambani");
+
+        String employeeJson = new Gson().toJson(employeePayrollData);
+        RequestSpecification request = RestAssured.given();
+        request.header("Content-Type", "application/json");
+        request.body(employeeJson);
+        Response response = request.put("/EmployeePayrollData/"+employeePayrollData.id);
+        int statusCode = response.getStatusCode();
+        Assert.assertEquals(200, statusCode);
+    }
+
 }

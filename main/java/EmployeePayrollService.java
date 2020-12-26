@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 public class EmployeePayrollService {
 
-
     public enum IOService{CONSOLE_IO,FILE_IO,DB_IO,REST_IO}
 
     private static EmployeePayrollDBService employeePayrollDBService;
@@ -73,6 +72,13 @@ public class EmployeePayrollService {
             employeePayrollData.salary = salary;
     }
 
+
+
+    public void updateEmployeeSalary(String name, double salary, IOService ioService) throws PayrollServiceException {
+        if(ioService.equals(IOService.REST_IO)){
+            this.upDateEmployeeSalary(name,salary);
+        }
+    }
 
     public void updateMultipleEmployeeSalaryWithThreads(Map<String, Double> myMap) {
         myMap.entrySet().forEach(m-> {

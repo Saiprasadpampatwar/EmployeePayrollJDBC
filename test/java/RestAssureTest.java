@@ -70,4 +70,26 @@ public class RestAssureTest {
         return request.post("/employeePayrollData");
     }
 
+    @Test
+    public void givenEmployeeListWhenAdded_shouldMatch201andCount() throws PayrollServiceException {
+        EmployeePayrollData[] arrayOfEmps = getEmployeeList();
+        employeePayrollService = new EmployeePayrollService(Arrays.asList(arrayOfEmps));
+
+        EmployeePayrollData[]  arrayOfEmpPayRolls = {
+                new EmployeePayrollData(0, "Sundar Pichai", 9000000.00, LocalDate.now(),'M'),
+                new EmployeePayrollData(0, "Anil Ambani", 5000000.00, LocalDate.now(),'M'),
+                new EmployeePayrollData(0, "Warren Buffet", 10000000.00, LocalDate.now(),'M'),
+                new EmployeePayrollData(0, "Tim Cook", 12000000.00, LocalDate.now(),'M')
+        };
+        for(EmployeePayrollData employeePayrollData : arrayOfEmpPayRolls) {
+            Response response = addEmployeeToJsonServer(employeePayrollData);
+            int statusCode = response.getStatusCode();
+            Assert.assertEquals(201, statusCode);
+            employeePayrollData = new Gson().fromJson(response.asString(), EmployeePayrollData.class);
+            employeePayrollService.addEmployeeToPayroll(employeePayrollData, EmployeePayrollService.IOService.REST_IO);
+        }
+        long entries = employeePayrollService.countEntries(EmployeePayrollService.IOService.REST_IO);
+        Assert.assertEquals(14,entries);
+
+    }
 }
